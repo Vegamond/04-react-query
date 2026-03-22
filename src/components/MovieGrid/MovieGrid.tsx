@@ -7,6 +7,9 @@ export interface MovieGridProps {
 }
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const FALLBACK_IMAGE = 'https://via.placeholder.com/300x450?text=No+Image';
+
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const FALLBACK_IMAGE =
   'https://via.placeholder.com/300x450?text=No+Image';
 

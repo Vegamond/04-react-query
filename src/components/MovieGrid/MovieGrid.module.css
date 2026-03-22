@@ -4,19 +4,28 @@
   gap: 16px;
   list-style: none;
   padding: 16px;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.item {
+  min-width: 0;
 }
 
 .card {
+  width: 100%;
   height: 100%;
+  border: none;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #ffffff;
+  background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.2s,
+    box-shadow 0.2s;
   cursor: pointer;
+  padding: 0;
+  text-align: left;
 }
 
 .card:hover,
