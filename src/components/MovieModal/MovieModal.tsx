@@ -1,50 +1,61 @@
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
-import type { Movie } from "../../types/movie";
-import css from "./MovieModal.module.css";
+import { useEffect } from 'react';
+import type { Movie } from '../../types/movie';
+import css from './MovieModal.module.css';
 
-interface MovieModalProps {
+export interface MovieModalProps {
   movie: Movie;
   onClose: () => void;
 }
 
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const FALLBACK_IMAGE =
+  'https://via.placeholder.com/300x450?text=No+Image';
+
 export default function MovieModal({ movie, onClose }: MovieModalProps) {
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
     };
-    window.addEventListener("keydown", handleKeyDown);
+
+    window.addEventListener('keydown', handleEscape);
+
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleEscape);
     };
   }, [onClose]);
 
-  return createPortal(
-    <div
-      className={css.backdrop}
-      role="dialog"
-      aria-modal="true"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
+  const handleBackdropClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div className={css.backdrop} onClick={handleBackdropClick}>
       <div className={css.modal}>
-        <button className={css.closeButton} aria-label="Close modal" onClick={onClose}>
-          &times;
+        <button className={css.closeButton} type="button" onClick={onClose}>
+          ×
         </button>
+
         <img
-          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-          alt={movie.title}
           className={css.image}
+          src={
+            movie.poster_path
+              ? `${IMAGE_BASE_URL}${movie.poster_path}`
+              : FALLBACK_IMAGE
+          }
+          alt={movie.title}
         />
+
         <div className={css.content}>
-          <h2>{movie.title}</h2>
-          <p>{movie.overview}</p>
-          <p><strong>Release Date:</strong> {movie.release_date}</p>
-          <p><strong>Rating:</strong> {movie.vote_average}/10</p>
+          <h2 className={css.title}>{movie.title}</h2>
+          <p className={css.text}>{movie.overview || 'No description available.'}</p>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
