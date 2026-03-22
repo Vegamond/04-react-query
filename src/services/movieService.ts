@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { MovieResponse } from '../types/movie';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
-const ACCESS_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
+const ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
 export const fetchMovies = async (
   query: string,
@@ -26,3 +26,4 @@ export const fetchMovies = async (
 
   return data;
 };
+
