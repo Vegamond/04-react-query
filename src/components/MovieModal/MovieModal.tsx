@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
-import type { Movie } from "../../types/movie";
-import css from "./MovieModal.module.css";
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import type { Movie } from '../../types/movie';
+import css from './MovieModal.module.css';
 
 export interface MovieModalProps {
   movie: Movie;
@@ -9,23 +9,24 @@ export interface MovieModalProps {
 }
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-const FALLBACK_IMAGE = 'https://via.placeholder.com/300x450?text=No+Image';
-
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const FALLBACK_IMAGE =
-  'https://via.placeholder.com/300x450?text=No+Image';
+  'https://dummyimage.com/300x450/cccccc/000000&text=No+Image';
 
 export default function MovieModal({ movie, onClose }: MovieModalProps) {
   useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
+
+    window.addEventListener('keydown', handleEscape);
+
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEscape);
     };
   }, [onClose]);
 
@@ -42,7 +43,7 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
       className={css.backdrop}
       role="dialog"
       aria-modal="true"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onClick={handleBackdropClick}
     >
       <div className={css.modal}>
         <button className={css.closeButton} type="button" onClick={onClose}>
@@ -61,11 +62,16 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
 
         <div className={css.content}>
           <h2>{movie.title}</h2>
-          <p>{movie.overview}</p>
-          <p><strong>Release Date:</strong> {movie.release_date}</p>
-          <p><strong>Rating:</strong> {movie.vote_average}/10</p>
+          <p>{movie.overview || 'No description available.'}</p>
+          <p>
+            <strong>Release Date:</strong> {movie.release_date || 'Unknown'}
+          </p>
+          <p>
+            <strong>Rating:</strong> {movie.vote_average}/10
+          </p>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
