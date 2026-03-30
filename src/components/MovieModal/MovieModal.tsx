@@ -10,7 +10,7 @@ export interface MovieModalProps {
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const FALLBACK_IMAGE =
-  'https://dummyimage.com/300x450/cccccc/000000&text=No+Image';
+  'https://dummyimage.com/500x281/cccccc/000000&text=No+Backdrop';
 
 export default function MovieModal({ movie, onClose }: MovieModalProps) {
   useEffect(() => {
@@ -53,8 +53,8 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
         <img
           className={css.image}
           src={
-            movie.poster_path
-              ? `${IMAGE_BASE_URL}${movie.poster_path}`
+            movie.backdrop_path
+              ? `${IMAGE_BASE_URL}${movie.backdrop_path}`
               : FALLBACK_IMAGE
           }
           alt={movie.title}
